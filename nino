@@ -23,16 +23,16 @@ def weather(dat, day_idx, metric=False):
     return day, forecast, high, low
 
 
-def cli_format(d, metric=False):
+def cli_format(d, metric=False, wrap=60):
     """Format weather data
     """
-    forecast = '\n'.join(textwrap.wrap(d[1], 60))
+    forecast = '\n'.join(textwrap.wrap(d[1], wrap))
     temp = '{loc}\n{delim}\n\nHigh {high}{deg}, Low {low}{deg}\n\n{forecast}\n'
     out = temp.format(loc=d[0], 
                       forecast=forecast, 
                       high=d[2], 
                       low=d[3], 
-                      delim=60*'=',
+                      delim=wrap*'=',
                       deg='°C' if metric else '°F')
     return out
 
@@ -55,7 +55,7 @@ def main():
     times = (0, 1, 2)
     for time in times:
         weather_data = weather(r, time, metric)
-        cli_output = cli_format(weather_data, metric)
+        cli_output = cli_format(weather_data, metric, 40)
         print cli_output
 
 if __name__ == '__main__':
